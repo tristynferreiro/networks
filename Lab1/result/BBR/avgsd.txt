@@ -1,6 +1,3 @@
-bbr Average: 1.445288
- bbr Standard Deviation: 0.081777
-bbr Average: 2.124000
- bbr Standard Deviation: 0.903267
-bbr Average: 1.638038
- bbr Standard Deviation: 0.338869
+Network Parameters maxq = 100, hostSpeed = 1000: avg = 1.459809, stdDev = 0.205483
+Network Parameters maxq = 20, hostSpeed = 1000: avg = 1.975761, stdDev = 0.410031
+Network Parameters maxq = 100, hostSpeed = 100: avg = 1.570199, stdDev = 0.361926
