@@ -1,3 +1,6 @@
-Network Parameters maxq = 100, hostSpeed = 1000: avg = 3.473133, stdDev = 0.711993
-Network Parameters maxq = 20, hostSpeed = 1000: avg = 1.999730, stdDev = 0.829554
-Network Parameters maxq = 100, hostSpeed = 100: avg = 3.582903, stdDev = 0.938224
+reno Average: 3.680497
+ reno Standard Deviation: 0.855704
+reno Average: 2.074299
+ reno Standard Deviation: 0.671809
+reno Average: 3.492416
+ reno Standard Deviation: 0.379803
