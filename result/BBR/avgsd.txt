@@ -1,0 +1,6 @@
+bbr Average: 1.445288
+ bbr Standard Deviation: 0.081777
+bbr Average: 2.124000
+ bbr Standard Deviation: 0.903267
+bbr Average: 1.638038
+ bbr Standard Deviation: 0.338869

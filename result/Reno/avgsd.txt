@@ -1,0 +1,6 @@
+reno Average: 3.680497
+ reno Standard Deviation: 0.855704
+reno Average: 2.074299
+ reno Standard Deviation: 0.671809
+reno Average: 3.492416
+ reno Standard Deviation: 0.379803

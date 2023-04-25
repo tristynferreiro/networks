@@ -23,7 +23,7 @@ from monitor import monitor_qlen
 import sys
 import os
 import math
-#import numpy
+import numpy
 
 
 # TODO: Don't just read the TODO sections in this code.  Remember that
@@ -129,10 +129,9 @@ def start_iperf(net):
     # long lived TCP flows in both direction
     server = h1.popen("iperf -s -w 16m")
     server2 = h2.popen("iperf -s -w 16m")
-    client1 = h1.popen(("iperf -c %s"%(h2.IP)),shell=True)
-    #client1 = h1.popen(("iperf -c %s -t %s"%(h2.IP,args.time)),shell=True)
-    client2 = h2.popen(("iperf -c %s"%(h1.IP)),shell=True)
-    #client2 = h2.popen(("iperf -c %s -t %s"%(h1.IP, args.time)),shell=True)
+
+    client1 = h1.popen(("iperf -c %s -t %s"%(h2.IP(),args.time)),shell=True)
+    client2 = h2.popen(("iperf -c %s -t %s"%(h1.IP(), args.time)),shell=True)
     
     
 def start_webserver(net):
@@ -146,20 +145,19 @@ def start_ping(net):
     # matter?)  Measure RTTs every 0.1 second.  Read the ping man page
     # to see how to do this https://linux.die.net/man/8/ping
 
-    # Hint: Use host.popen(cmd, shell=True).  If you pass shell=True
-    # to popen, you can redirect cmd's output using shell syntax.
-    # i.e. ping ... > /path/to/ping.
     h1 = net.get('h1') 
     h2 = net.get('h2')
     h1.popen("ping -i 0.1 %s > %s/pingOut.txt"%(h2.IP(), args.dir),shell=True)
-	 
+
+# Function used to time how ling it takes to fetch a webpagee 
 def get_webpageTime(net):
+	print("Getting webpage")
 	h1 = net.get('h1') # This is the webpage host
 	h2 = net.get('h2')
 	# get the ping time from h2 to the webpage hosted on h1.
-	webpage = h2.popen('curl -o /dev/null -s -w %%{time_total} %s/http/index.html' % h1.IP(), shell=1, stdout=PIPE) 
-	webpageTime = float(webpage.stdout.read()) 
-	return webpageTime
+	webpage = h2.popen('curl -o /dev/null -s -w %%{time_total} %s/http/index.html' % h1.IP(), shell=True, stdout=PIPE) 
+	get = float(webpage.stdout.read()) 
+	return get
 
 def tcp():
     if not os.path.exists(args.dir):
@@ -175,7 +173,7 @@ def tcp():
     net.pingAll()
 
     # Start all the monitoring processes
-    # start_tcpprobe("cwnd.txt")
+    start_tcpprobe("cwnd.txt")
 
     # TODO3: Start monitoring the queue sizes
     # Want to monitor the interface causing the bottleneck: interface between h2 and the switch.
@@ -206,16 +204,17 @@ def tcp():
         # want to ping the webpage 3 times
         for i in range(3): 
         	webpageTime = get_webpageTime(net) # get the ping time
+		#print("webpageTime %s" %(webpageTime))
         	timeMeasurements.append(webpageTime) # store all ping times
        
     # TODO: compute average (and standard deviation) of the fetch times.  
-    #average =sum(timeMeasurements)
-    #deviation = numpy.std(timeMeasurements)
-    #print("Average: %d" %(average))
-    #print("Standard Deviation: %d" %(deviation))
+    average = numpy.average(timeMeasurements)
+    deviation = numpy.std(timeMeasurements)
+    print("%s Average: %s" %(args.cong, average))
+    print("%s Standard Deviation: %s" %(args.cong, deviation))
     # save values to a file but want to append
-    #file =  open('%s/avgsd.txt'%(args.dir), 'a')
-    #file.write("Average: %lf\nStandard Deviation: %lf\n" %(avg(time_measures), stdev(time_measures)))
+    file =  open('%s/avgsd.txt'%(args.dir), 'a')
+    file.write("%s Average: %lf\n %s Standard Deviation: %lf\n" %(args.cong, average, args.cong, deviation))
 	
     stop_tcpprobe()
     qmon.terminate()
@@ -229,3 +228,4 @@ if __name__ == "__main__":
 
 #  sudo python tcp.py --bw-host 1000 --bw-net 2 --delay 50 --dir results --time 20 --cong reno --qman pfifo_fast
 # sudo mn -c
+# python plot_ping.py -f results/pingOut.txt -o ping.png

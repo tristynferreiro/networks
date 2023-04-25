@@ -1,0 +1,6 @@
+cubic Average: 2.737997
+ cubic Standard Deviation: 1.437376
+cubic Average: 2.071320
+ cubic Standard Deviation: 0.661179
+cubic Average: 4.849418
+ cubic Standard Deviation: 2.008174
