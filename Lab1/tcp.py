@@ -88,11 +88,8 @@ class TCPTopo(Topo):
         switch = self.addSwitch('s0')
         
         # TODO2: Add links with appropriate characteristics
-        # self.addLink( node1, node2, bw=10, delay='5ms', max_queue_size=1000, loss=10, use_htb=True)
         self.addLink(h1,switch,bw=args.bw_host, delay=args.delay, max_queue_size=args.maxq)
-        #self.addLink(h1,switch,args.bw_host,args.delay,args.maxq)
         self.addLink(switch,h2, bw=args.bw_net, delay=args.delay, max_queue_size=args.maxq)
-        # self.addLink(switch,h2, args.bw_net, args.delay, args.maxq)
         
         return
 
@@ -121,7 +118,7 @@ def start_iperf(net):
     
     
     print("Starting iperf server...")
-    # For those who are curious about the -w 16m parameter, it ensures
+    # the -w 16m parameter, it ensures
     # that the TCP flow is not receiver window limited.  If it is,
     # there is a chance that the router buffer may not get filled up.
     
@@ -214,7 +211,7 @@ def tcp():
     print("%s Standard Deviation: %s" %(args.cong, deviation))
     # save values to a file but want to append
     file =  open('%s/avgsd.txt'%(args.dir), 'a')
-    file.write("%s Average: %lf\n %s Standard Deviation: %lf\n" %(args.cong, average, args.cong, deviation))
+    file.write("Network Parameters maxq = %d, hostSpeed = %d: avg = %lf, stdDev = %lf\n" %(args.maxq, args.bw_host, average, deviation))
 	
     stop_tcpprobe()
     qmon.terminate()
