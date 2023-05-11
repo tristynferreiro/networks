@@ -92,12 +92,13 @@ class Firewall (object):
       contents = csv.reader(file)
       for row in contents:
         if(row[0]!="id"): # skip header row
-          self.ignore.add(int(row[1][-2:])) # get mac addresses
+          self.ignore.add(row[1]) # get mac addresses#self.ignore.add(int(row[1][-2:])) # get mac addresses
 
   def _handle_ConnectionUp (self, event):
 	#TODO Add your logic here
     # Block packets from unwanted connections
-    if event.dpid in self.ignore:
+	packet = event.parsed
+    if packet.src in self.ignore or packet.src in self.ignore:
       log.debug("Ignoring connection %s" % (event.connection,))
       return
     log.debug("Connection %s" % (event.connection,))
