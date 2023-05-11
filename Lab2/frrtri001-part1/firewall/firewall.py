@@ -12,7 +12,17 @@ from pox.lib.util import dpid_to_str
 
 #TODO Add your global variables here 
 log = core.getLogger()
-policyFile = "%s/lab_2_1/firewall/firewall-policies.csv" % (os.environ[ 'HOME' ])
+policyFile = "%s/Desktop/frrtri001-part1/firewall/firewall-policies.csv" % (os.environ[ 'HOME' ])
+
+blocked = set()
+""" Define which connections should be blocked"""
+# read the list
+with open(policyFile,'r') as file:
+  contents = csv.reader(file)
+  for row in contents:
+    if(row[0]!="id"): # skip header row
+      blocked.add(row[1])#int(row[1][-2:])) # get mac addresses
+      print(blocked)
 
 class LearningSwitch (object): # Copyright 2011-2012 James McCauley
   def __init__ (self, connection):
@@ -26,6 +36,9 @@ class LearningSwitch (object): # Copyright 2011-2012 James McCauley
   def _handle_PacketIn (self, event):
     packet = event.parsed
 
+    if str(packet.src) in blocked or str(packet.dst) in blocked:
+      return
+    
     def flood (message = None):
       """ Floods the packet """
       msg = of.ofp_packet_out()
@@ -80,8 +93,7 @@ class LearningSwitch (object): # Copyright 2011-2012 James McCauley
         msg.actions.append(of.ofp_action_output(port = port))
         msg.data = event.ofp # 6a
         self.connection.send(msg)
-
-
+    
 class Firewall (object):
   def __init__ (self):
     core.openflow.addListeners(self)
@@ -95,14 +107,6 @@ class Firewall (object):
           self.ignore.add(row[1]) # get mac addresses#self.ignore.add(int(row[1][-2:])) # get mac addresses
 
   def _handle_ConnectionUp (self, event):
-    # Block packets from unwanted connections
-    packet = event.parsed
-    packetSrc = str(packet.src)
-    packetDst = str(packet.dst)
-    if packetSrc in self.ignore or packetDst in self.ignore:
-      log.debug("Ignoring connection %s" % (event.connection,))
-      return
-    log.debug("Connection %s" % (event.connection,))
     LearningSwitch(event.connection)
 
 

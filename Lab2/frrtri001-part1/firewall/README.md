@@ -4,7 +4,7 @@
 Make sure to put the folder in the HOME location in the VM drive
 
 The experiment can be run from the command line:
-$ cd ./lab_2_1/firewall
+$ cd /Desktop/frrtri001-part1/firewall 
 $ sudo ./run.sh
 
 Assuming that you attempt to run this in the same VM as per the lab instructions, the run.sh file:

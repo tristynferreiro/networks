@@ -13,7 +13,7 @@ for((i = 1; i<9; i++)); do
 	rm firewall-policies.csv
 	cp "testfiles/firewall-policies-$i.csv" ./firewall-policies.csv
 	
-	sleep 1
+	sleep 3
 	# Need to start the controller in new terminal window to avoid blocking tests
 	echo "Starting Firewall"
 	gnome-terminal -- bash -c "~/pox/pox.py forwarding.firewall; exec bash"
