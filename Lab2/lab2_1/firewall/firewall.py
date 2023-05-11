@@ -12,7 +12,7 @@ from pox.lib.util import dpid_to_str
 
 #TODO Add your global variables here 
 log = core.getLogger()
-policyFile = "%s/eee4121f-b-lab2-sdn/firewall/firewall-policies.csv" % (os.environ[ 'HOME' ])
+policyFile = "%s/lab_2_1/firewall/firewall-policies.csv" % (os.environ[ 'HOME' ])
 
 class LearningSwitch (object): # Copyright 2011-2012 James McCauley
   def __init__ (self, connection):

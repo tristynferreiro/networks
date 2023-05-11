@@ -1,8 +1,10 @@
 # eee4121f-b-lab2
 # FRRTRI001 Submission Part 1
 
+Make sure to put the folder in the HOME location in the VM drive
+
 The experiment can be run from the command line:
-$ cd ./frrtri001_firewall/
+$ cd ./lab_2_1/firewall
 $ sudo ./run.sh
 
 Assuming that you attempt to run this in the same VM as per the lab instructions, the run.sh file:
