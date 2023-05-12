@@ -21,8 +21,7 @@ with open(policyFile,'r') as file:
   contents = csv.reader(file)
   for row in contents:
     if(row[0]!="id"): # skip header row
-      blocked.add(row[1])#int(row[1][-2:])) # get mac addresses
-      print(blocked)
+      blocked.add(row[1]) # get mac addresses
 
 class LearningSwitch (object): # Copyright 2011-2012 James McCauley
   def __init__ (self, connection):
@@ -97,15 +96,7 @@ class LearningSwitch (object): # Copyright 2011-2012 James McCauley
 class Firewall (object):
   def __init__ (self):
     core.openflow.addListeners(self)
-    """ Define which connections should be blocked"""
-    self.ignore = set()
-    # read the list
-    with open(policyFile,'r') as file:
-      contents = csv.reader(file)
-      for row in contents:
-        if(row[0]!="id"): # skip header row
-          self.ignore.add(row[1]) # get mac addresses#self.ignore.add(int(row[1][-2:])) # get mac addresses
-
+    
   def _handle_ConnectionUp (self, event):
     LearningSwitch(event.connection)
 
